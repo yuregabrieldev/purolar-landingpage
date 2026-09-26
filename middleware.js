@@ -1,3 +1,5 @@
+import { next } from '@vercel/functions';
+
 const EXPECTED_AUTH = 'Basic UHVyb0xhcjpQdXJvTGFyIzIwMjY=';
 
 export default function middleware(request) {
@@ -10,7 +12,7 @@ export default function middleware(request) {
     });
   }
 
-  return undefined;
+  return next();
 }
 
 export const config = {
