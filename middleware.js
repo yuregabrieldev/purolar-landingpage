@@ -21,6 +21,7 @@ export const config = {
     '/identidade',
     '/cartoes',
     '/purolar-variacoes-aprovadas',
+    '/variacoes',
     '/assets/:path*'
   ]
 };
