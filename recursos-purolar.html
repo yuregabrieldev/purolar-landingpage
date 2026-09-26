@@ -16,11 +16,13 @@
       <div class="mark"><img src="/purolar-simbolo-estudo-02.svg" alt=""><span>PuroLar<small>espaço reservado</small></span></div>
       <p class="eyebrow">Acesso protegido</p>
       <h1 id="gate-title">Materiais da marca.</h1>
-      <p class="muted">Esta área reúne os documentos de identidade, cartões e variações aprovadas.</p>
+      <p class="muted">Esta área reúne os documentos de identidade, cartões e variações aprovadas. Entre com o seu acesso PuroLar.</p>
       <form id="gate-form">
-        <label for="access-key">Chave de acesso</label>
-        <input id="access-key" name="access-key" type="password" autocomplete="current-password" required placeholder="Introduza a chave">
-        <button class="button" type="submit">Entrar <span aria-hidden="true">↗</span></button>
+        <label for="gate-email">E-mail</label>
+        <input id="gate-email" name="email" type="email" autocomplete="username" required placeholder="seu@email.com">
+        <label for="gate-password">Palavra-passe</label>
+        <input id="gate-password" name="password" type="password" autocomplete="current-password" required placeholder="Introduza a palavra-passe">
+        <button class="button" id="gate-submit" type="submit">Entrar <span aria-hidden="true">↗</span></button>
         <p class="form-error" id="gate-error" role="alert"></p>
       </form>
       <a class="back-link" href="/">← Voltar ao site</a>
