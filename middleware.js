@@ -8,7 +8,7 @@ export default function middleware(request) {
   if (authorization !== EXPECTED_AUTH) {
     return new Response('Acesso reservado.', {
       status: 401,
-      headers: { 'WWW-Authenticate': 'Basic realm="PuroLar — materiais reservados", charset="UTF-8"' }
+      headers: { 'WWW-Authenticate': 'Basic realm="PuroLar-reservado"' }
     });
   }
 
