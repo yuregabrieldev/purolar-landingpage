@@ -1,0 +1,17 @@
+/* Mesma composição para galeria e editor, dimensionada proporcionalmente. */
+.business{--ink:#163a46;--cream:#f7f3eb;--sand:#dcc3a6;--terra:#c65a3f;aspect-ratio:85/55;position:relative;padding:8%;overflow:hidden;display:flex;flex-direction:column;justify-content:space-between;background:var(--ink);color:var(--cream);container-type:inline-size;box-sizing:border-box;font-family:Manrope,'Segoe UI',sans-serif;line-height:1.65}
+.business .logo{display:inline-flex;align-items:center;gap:2.32cqw}
+.business .logo img{width:6.43cqw;height:8.57cqw;flex:none}
+.business .logo b{font-size:7.14cqw;font-weight:500;letter-spacing:-.065em;line-height:1.1}
+.business .logo small{display:block;font-size:1.25cqw;letter-spacing:.16em;text-transform:uppercase}
+.business.center{justify-content:center;align-items:center}
+.business .tag{font-size:2.5cqw;max-width:37.5cqw;line-height:1.4}
+.business.cream{background:#fffdf9;color:var(--ink)}
+.business.sand{background:var(--sand);color:var(--ink)}
+.business .bigmark{position:absolute;height:130%;right:-5.36cqw;top:15%;opacity:.08;pointer-events:none}
+.business .card-info{font-size:2.32cqw;line-height:1.8;z-index:1}
+.business .card-info b{font-size:3.21cqw;font-weight:700}
+.business .qr-placeholder{position:absolute;right:8%;bottom:12%;width:16.79cqw!important;height:16.79cqw!important;background:white;border:0}
+.business .warm-mark{position:absolute;right:-2.14cqw;bottom:-7.14cqw;height:70%;opacity:.15;pointer-events:none}
+.business.warm-back{border-left:2.68cqw solid var(--terra)!important}
+
