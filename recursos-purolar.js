@@ -7,6 +7,11 @@ const form = document.querySelector('#gate-form');
 const error = document.querySelector('#gate-error');
 const submit = document.querySelector('#gate-submit');
 const logout = document.querySelector('#logout');
+const setAccessCookie = token => {
+  document.cookie = token
+    ? `purolar-auth-token=${token}; Path=/; Max-Age=3600; SameSite=Lax${location.protocol === 'https:' ? '; Secure' : ''}`
+    : 'purolar-auth-token=; Path=/; Max-Age=0; SameSite=Lax';
+};
 
 function showWorkspace() {
   if (!gate || !workspace) return;
@@ -39,7 +44,13 @@ function messageFor(error) {
     if (session) showWorkspace(); else showGate();
 
     client.auth.onAuthStateChange((_event, nextSession) => {
-      if (nextSession) showWorkspace(); else showGate();
+      if (nextSession) {
+        setAccessCookie(nextSession.access_token);
+        showWorkspace();
+      } else {
+        setAccessCookie();
+        showGate();
+      }
     });
 
     form?.addEventListener('submit', async (event) => {
@@ -58,6 +69,7 @@ function messageFor(error) {
 
     logout?.addEventListener('click', async () => {
       await client.auth.signOut();
+      setAccessCookie();
       showGate();
     });
   } catch (loadError) {
