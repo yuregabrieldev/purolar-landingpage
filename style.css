@@ -37,6 +37,8 @@
 .reviews-carousel .review figcaption{margin-top:auto}
 .reviews-carousel .review-featured .review-service{color:var(--sand)}
 .reviews-carousel .review-featured blockquote{margin-top:36px}
+.reviews-carousel>.review:not(.review-featured) .review-service{color:var(--ink)}
+.reviews-carousel>.review:not(.review-featured) blockquote p{color:var(--terra)}
 @media(max-width:760px){.reviews-layout.reviews-carousel{grid-template-columns:1fr;grid-template-rows:340px 280px 280px}.reviews-carousel>.review-slot-0{grid-column:1;grid-row:1}.reviews-carousel>.review-slot-1{grid-column:1;grid-row:2}.reviews-carousel>.review-slot-2{grid-column:1;grid-row:3}.reviews-carousel .review blockquote p{font-size:19px}.reviews-carousel .review-featured blockquote p{font-size:25px}}
 .review-featured blockquote{min-height:245px}
 .reviews-secondary blockquote{min-height:122px}
