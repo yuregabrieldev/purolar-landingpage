@@ -3,6 +3,7 @@
 <main class="editor"><aside><h1>O seu cartão.<br>À sua medida.</h1><p>Altere os campos ou clique diretamente nos textos do cartão. As mudanças ficam guardadas neste navegador.</p>
 <label>Modelo<select id="model"><option value="essential">01 · Essencial</option><option value="warm">02 · Próximo</option></select></label>
 <div id="fields"></div>
+<fieldset><legend>Guardar artes</legend><p class="help">Exporta os textos e cores atuais. PNG em 300 ppp. O formato abaixo controla a sangria.</p><p>Frente <button data-export="front:svg">SVG</button> <button data-export="front:png">PNG</button></p><p>Verso <button data-export="back:svg">SVG</button> <button data-export="back:png">PNG</button></p><p>Frente + verso <button data-export="both:svg">SVG juntos</button> <button data-export="both:png">PNG juntos</button></p><p class="help">Os dois juntos ficam numa prancha, um por baixo do outro, com marcas de corte. Para impressão frente e verso em páginas separadas, use «Exportar PDF / imprimir».</p></fieldset>
 <label>Destino do QR<select id="qrmode"><option value="site">Site oficial</option><option value="whatsapp">WhatsApp</option><option value="custom">Outro endereço</option></select></label>
 <label id="custom-label" hidden>Endereço personalizado<input id="custom" type="url" placeholder="https://…"></label>
 <label>Formato de exportação<select id="format"><option value="bleed">91 × 61 mm · inclui sangria de 3 mm</option><option value="trim">85 × 55 mm · tamanho final</option></select></label>

@@ -22,7 +22,7 @@ document.querySelector('#save').onclick=()=>download('purolar-cartao-'+state.mod
 document.querySelector('#load').onchange=async e=>{try{state=clean(JSON.parse(await e.target.files[0].text()));render();status.textContent='Projeto aberto.';}catch(err){status.textContent=err.message;}e.target.value='';};
 document.querySelector('#reset').onclick=()=>{if(confirm('Repor os dados oficiais neste projeto?')){state={...defaults};render();}};
 document.querySelector('#print').onclick=async()=>{await document.fonts.ready;if(qrPending){status.textContent='Corrija o destino do QR antes de exportar.';return;}if(checkOverflow())return;window.print();};
-async function dataURI(url){const response=await fetch(url);if(!response.ok)throw Error('Não foi possível incorporar um recurso.');return await new Promise(resolve=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.readAsDataURL(response.blob());});}
+async function dataURI(url){const response=await fetch(url);if(!response.ok)throw Error('Não foi possível incorporar um recurso.');const blob=await response.blob();return await new Promise((resolve,reject)=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.onerror=reject;reader.readAsDataURL(blob);});}
 document.querySelector('#portable').onclick=async()=>{const button=document.querySelector('#portable');button.disabled=true;try{
 if(document.body.dataset.portable){const clone=document.documentElement.cloneNode(true);clone.querySelector('#portable').disabled=false;clone.querySelector('#embedded-project').textContent=JSON.stringify(state).replace(/</g,'\\u003c');download('PuroLar-cartao-editavel.html','<!doctype html>'+clone.outerHTML,'text/html');status.textContent='Documento guardado.';return;}
 const [css,js,engine,font,semi,dark,light]=await Promise.all([fetch('editor-cartoes.css').then(r=>r.text()),fetch('editor-cartoes.js').then(r=>r.text()),fetch('qr-engine.js').then(r=>r.text()),dataURI('manrope-regular.woff2'),dataURI('manrope-semibold.woff2'),dataURI('../purolar-simbolo-estudo-02.svg'),dataURI('../purolar-simbolo-estudo-02-invertido.svg')]);
@@ -36,3 +36,80 @@ render=function(sync=true){originalRender(sync);syncModelButtons();};
 const requestedModel=new URLSearchParams(location.search).get('modelo');
 if(['essential','warm'].includes(requestedModel))state.model=requestedModel;
 render();
+
+// Export native SVG shapes and text using the preview's actual layout.
+const xml=value=>String(value).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&apos;'}[c]));
+async function exportCard(side){
+  const sheet=document.getElementById(side), box=sheet.getBoundingClientRect();
+  const business=sheet.querySelector('.business'), b=business.getBoundingClientRect();
+  const bg=side==='front'?(state.model==='warm'?'#dcc3a6':'#163a46'):'#fffdf9';
+  let content=`<rect width="${box.width}" height="${box.height}" fill="${bg}"/>`;
+  if(side==='back'&&state.model==='warm')content+=`<rect width="${b.left-box.left+parseFloat(getComputedStyle(business).borderLeftWidth)}" height="${box.height}" fill="#c65a3f"/>`;
+  content+=`<svg x="${b.left-box.left}" y="${b.top-box.top}" width="${b.width}" height="${b.height}" viewBox="0 0 ${b.width} ${b.height}" overflow="hidden">`;
+  for(const img of business.querySelectorAll('img')){
+    const r=img.getBoundingClientRect(), css=getComputedStyle(img);
+    const src=img.src.startsWith('data:')?img.src:await dataURI(img.src);
+    content+=`<image x="${r.left-b.left}" y="${r.top-b.top}" width="${r.width}" height="${r.height}" opacity="${css.opacity}" href="${xml(src)}"/>`;
+  }
+  for(const el of business.querySelectorAll('[data-key]')){
+    const css=getComputedStyle(el), walker=document.createTreeWalker(el,NodeFilter.SHOW_TEXT);
+    let node;
+    while(node=walker.nextNode())for(let i=0;i<node.length;i++){
+      const char=node.textContent[i];if(char==='\n')continue;
+      const range=document.createRange();range.setStart(node,i);range.setEnd(node,i+1);
+      const r=range.getBoundingClientRect();if(!r.width)continue;
+      content+=`<text x="${r.left-b.left}" y="${r.top-b.top+r.height/2}" dominant-baseline="central" font-family="Manrope" font-size="${css.fontSize}" font-weight="${css.fontWeight}" fill="${css.color}">${xml(css.textTransform==='uppercase'?char.toUpperCase():char)}</text>`;
+    }
+  }
+  return {content:content+'</svg>',width:box.width,height:box.height};
+}
+async function exportFonts(){
+  let css='';
+  for(const sheet of document.styleSheets)for(const rule of sheet.cssRules)if(rule.type===CSSRule.FONT_FACE_RULE){
+    let text=rule.cssText;
+    const match=text.match(/url\(["']?([^"')]+)["']?\)/);
+    if(match&&!match[1].startsWith('data:'))text=text.replace(match[1],await dataURI(new URL(match[1],sheet.href||location.href).href));
+    css+=text;
+  }
+  return css;
+}
+async function saveArtwork(side,type){
+  await document.fonts.ready;
+  if(qrPending)throw Error('Confirme o destino do QR e aguarde a atualização.');
+  if(checkOverflow())throw Error('Encurte os textos assinalados antes de exportar.');
+  const mmW=state.format==='bleed'?91:85, mmH=state.format==='bleed'?61:55;
+  const px=96/25.4, both=side==='both';
+  const width=both?mmW+20:mmW,height=both?mmH*2+30:mmH;
+  const sides=both?['front','back']:[side];
+  let body=both?`<rect width="100%" height="100%" fill="white"/>`:'';
+  for(let i=0;i<sides.length;i++){
+    const card=await exportCard(sides[i]), x=both?10*px:0,y=both?(10+i*(mmH+10))*px:0;
+    body+=`<svg x="${x}" y="${y}" width="${mmW*px}" height="${mmH*px}" viewBox="0 0 ${card.width} ${card.height}">${card.content}</svg>`;
+    if(both){
+      const bleed=state.format==='bleed'?3:0;
+      for(const cx of [bleed,mmW-bleed])for(const cy of [bleed,mmH-bleed]){
+        const xx=x+cx*px,yy=y+cy*px,dx=cx<mmW/2?-1:1,dy=cy<mmH/2?-1:1;
+        body+=`<path d="M ${xx+dx*4*px} ${yy} h ${dx*2*px} M ${xx} ${yy+dy*4*px} v ${dy*2*px}" stroke="#555" stroke-width="0.4" fill="none"/>`;
+      }
+    }
+  }
+  const svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${width}mm" height="${height}mm" viewBox="0 0 ${width*px} ${height*px}"><defs><style>${await exportFonts()}</style></defs>${body}</svg>`;
+  const name=`PuroLar-${state.model}-${both?'frente-e-verso':side==='front'?'frente':'verso'}-${state.format}`;
+  if(type==='svg')download(name+'.svg',svg,'image/svg+xml');
+  else{
+    const image=new Image(),url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml'}));
+    try{
+      await new Promise((resolve,reject)=>{image.onload=resolve;image.onerror=()=>reject(Error('Não foi possível gerar o PNG.'));image.src=url;});
+      const canvas=document.createElement('canvas');canvas.width=Math.round(width/25.4*300);canvas.height=Math.round(height/25.4*300);
+      canvas.getContext('2d').drawImage(image,0,0,canvas.width,canvas.height);
+      const blob=await new Promise(resolve=>canvas.toBlob(resolve,'image/png'));
+      if(!blob)throw Error('Não foi possível gerar o PNG.');
+      download(name+'-300ppp.png',blob,'image/png');
+    }finally{URL.revokeObjectURL(url);}
+  }
+}
+document.querySelectorAll('[data-export]').forEach(button=>button.addEventListener('click',async()=>{
+  button.disabled=true;
+  try{await saveArtwork(...button.dataset.export.split(':'));status.textContent='Arte guardada. Imprima a 100% para manter o tamanho real.';}
+  catch(error){status.textContent=error.message;}finally{button.disabled=false;}
+}));
