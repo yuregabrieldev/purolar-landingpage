@@ -15,7 +15,7 @@
 .review figcaption{display:flex;align-items:center;gap:14px}
 .review figcaption strong{display:block;font-size:13px;font-weight:600}
 .review figcaption small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
-.review-featured{background:var(--ink);color:var(--cream);padding:42px;display:flex;flex-direction:column;border-radius:6px 72px 6px 6px}
+.review-featured{background:var(--terra);color:var(--cream);padding:42px;display:flex;flex-direction:column;border-radius:6px 72px 6px 6px}
 .review-quote{font-family:Georgia,serif;font-size:100px;line-height:.85;color:var(--sand);height:60px}
 .review-featured blockquote{margin:26px 0 40px}
 .review-featured blockquote p{font-size:clamp(25px,2.6vw,35px);line-height:1.4;letter-spacing:-.04em}

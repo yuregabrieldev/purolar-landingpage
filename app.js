@@ -68,8 +68,8 @@ if(reviews){
     for(const card of [top,bottom]){
      const from=before.get(card),to=card.getBoundingClientRect();
      animations.push(card.animate([
-      {transform:'translate('+(from.left-to.left)+'px,'+(from.top-to.top)+'px) scale('+(from.width/to.width)+','+(from.height/to.height)+')',backgroundColor:'#faf7f1',color:'#163a46'},
-      {transform:'none',backgroundColor:card===bottom?'#163a46':'#faf7f1',color:card===bottom?'#f7f3eb':'#163a46'}
+      {transform:'translate('+(from.left-to.left)+'px,'+(from.top-to.top)+'px) scale('+(from.width/to.width)+','+(from.height/to.height)+')',backgroundColor:card===top?'#c65a3f':'#faf7f1',color:card===top?'#f7f3eb':'#163a46'},
+      {transform:'none',backgroundColor:card===bottom?'#c65a3f':'#faf7f1',color:card===bottom?'#f7f3eb':'#163a46'}
      ],options));
     }
     animations.push(outgoing.animate([{opacity:1,transform:'translateX(0)'},{opacity:0,transform:'translateX(-32px)'}],{...options,duration:1200,fill:'forwards'}));
