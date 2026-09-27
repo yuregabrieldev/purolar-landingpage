@@ -14,7 +14,7 @@ function loginRedirect(request){
 
 export default async function middleware(request){
  const url=new URL(request.url);
- if(url.pathname==='/'||url.pathname==='/api/leads'||publicAsset.test(url.pathname))return;
+ if(url.pathname==='/'||url.pathname==='/api/leads'||url.pathname==='/api/testimonials'||publicAsset.test(url.pathname))return;
  const token=getCookie(request,'purolar-auth-token');
  if(!token)return loginRedirect(request);
  try{
