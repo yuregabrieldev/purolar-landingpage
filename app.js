@@ -46,6 +46,7 @@ if(reviews){
   };
   let cards=[make(queue[0],0),make(queue[2],1),make(queue[1],2)];
   layout.replaceChildren(...cards);
+  reviews.hidden=false;
   const schedule=()=>{clearTimeout(timer);if(visible&&!document.hidden&&!animating)timer=setTimeout(advance,6000);};
   async function advance(){
    if(animating)return;

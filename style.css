@@ -6,26 +6,32 @@
 .hero-media>img{object-position:50% 40%}
 
 /* Avaliações: exemplos identificados na página de teste. */
-.reviews{background:#eee7dc;color:var(--ink)}
+.reviews{--review-ink:var(--terra);--review-muted:var(--muted);background:#eee7dc;color:var(--review-ink)}
+.reviews-heading p,.reviews-bottom p{color:var(--review-ink)}
+.reviews .reviews-heading .eyebrow{color:var(--review-ink)}
 .reviews-heading .eyebrow{margin-bottom:20px}
 .reviews-layout{display:grid;grid-template-columns:1.05fr 1fr;gap:24px}
 .review{margin:0;padding:32px;background:#faf7f1;border-radius:6px}
 .review blockquote{margin:18px 0 26px}
 .review blockquote p{font-size:19px;line-height:1.6;letter-spacing:-.025em;margin:0}
+.review blockquote p::before{content:'“'}
+.review blockquote p::after{content:'”'}
 .review figcaption{display:flex;align-items:center;gap:14px}
 .review figcaption strong{display:block;font-size:13px;font-weight:600}
 .review figcaption small{display:block;font-size:11px;color:var(--muted);margin-top:3px}
-.review-featured{background:var(--terra);color:var(--cream);padding:42px;display:flex;flex-direction:column;border-radius:6px 72px 6px 6px}
+.review-featured{position:relative;isolation:isolate;overflow:hidden;background:var(--terra);color:var(--cream);padding:42px;display:flex;flex-direction:column;border-radius:6px 72px 6px 6px}
+.review-featured::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;background:url('./assets/purolar-review-pattern.svg') repeat center;background-size:112px auto;opacity:.065}
 .review-quote{font-family:Georgia,serif;font-size:100px;line-height:.85;color:var(--sand);height:60px}
 .review-featured blockquote{margin:26px 0 40px}
 .review-featured blockquote p{font-size:clamp(25px,2.6vw,35px);line-height:1.4;letter-spacing:-.04em}
-.review-featured figcaption{margin-top:auto;padding-top:24px;border-top:1px solid #ffffff26}
-.review-featured figcaption small{color:#c3d0cf}
+.review-featured figcaption{margin-top:auto;padding:20px 22px;background:var(--cream);border:0;border-radius:6px;color:var(--terra)}
+.review-featured figcaption strong,.review-featured figcaption small{color:var(--terra)}
+.review-featured figcaption .review-avatar{color:var(--terra);border-color:#c65a3f40}
 .review-avatar{width:44px;height:44px;display:grid;place-items:center;border:1px solid #dcc3a660;border-radius:50%;font-size:12px;color:var(--sand);flex-shrink:0}
 .reviews-secondary{display:grid;gap:24px}
-.review-service{font-size:12px;color:#a1432d}
+.review-service{font-size:12px;color:var(--terra)}
 .reviews-bottom{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:32px}
-.reviews-bottom p{font-size:14px;color:var(--muted);margin:0}
+.reviews-bottom p{font-size:14px;color:var(--review-ink);margin:0}
 .reviews-bottom a{font-size:13px;font-weight:600;border-bottom:1px solid var(--terra);padding-bottom:6px}
 .reviews-bottom a:focus-visible{outline:2px solid var(--terra);outline-offset:6px}
 .reviews-carousel{position:relative;grid-template-columns:1.05fr 1fr;grid-template-rows:280px 280px;isolation:isolate}
@@ -35,10 +41,13 @@
 .reviews-carousel>.review-slot-2{grid-column:2;grid-row:2}
 .reviews-carousel .review blockquote{min-height:0;margin:18px 0 24px}
 .reviews-carousel .review figcaption{margin-top:auto}
-.reviews-carousel .review-featured .review-service{color:var(--sand)}
+.reviews-carousel .review-featured .review-service{color:var(--cream)}
 .reviews-carousel .review-featured blockquote{margin-top:36px}
-.reviews-carousel>.review:not(.review-featured) .review-service{color:var(--ink)}
-.reviews-carousel>.review:not(.review-featured) blockquote p{color:var(--terra)}
+.reviews .review:not(.review-featured) .review-service,
+.reviews .review:not(.review-featured) blockquote p,
+.reviews .review:not(.review-featured) figcaption strong{color:var(--review-ink)}
+.reviews .review:not(.review-featured) figcaption small{color:var(--review-ink)}
+.reviews .review:not(.review-featured) .review-avatar{color:var(--review-ink);border-color:#c65a3f40}
 @media(max-width:760px){.reviews-layout.reviews-carousel{grid-template-columns:1fr;grid-template-rows:340px 280px 280px}.reviews-carousel>.review-slot-0{grid-column:1;grid-row:1}.reviews-carousel>.review-slot-1{grid-column:1;grid-row:2}.reviews-carousel>.review-slot-2{grid-column:1;grid-row:3}.reviews-carousel .review blockquote p{font-size:19px}.reviews-carousel .review-featured blockquote p{font-size:25px}}
 .review-featured blockquote{min-height:245px}
 .reviews-secondary blockquote{min-height:122px}
