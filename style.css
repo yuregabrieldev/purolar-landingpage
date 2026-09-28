@@ -57,3 +57,8 @@
 .reviews-secondary blockquote{min-height:122px}
 @media(max-width:760px){.review-featured blockquote{min-height:200px}.reviews-secondary blockquote{min-height:130px}}
 @media(max-width:760px){.reviews-layout{grid-template-columns:1fr}.review-featured{padding:32px}.review{padding:28px}.reviews-bottom{align-items:flex-start;flex-direction:column;gap:16px}}
+
+/* Give longer testimonials room to breathe before the client details panel. */
+.reviews-carousel{grid-template-rows:320px 320px}
+.reviews-carousel .review blockquote{margin-bottom:42px}
+@media(max-width:760px){.reviews-layout.reviews-carousel{grid-template-rows:440px 360px 360px}.reviews-carousel .review blockquote{margin-bottom:46px}}
