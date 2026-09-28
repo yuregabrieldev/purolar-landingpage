@@ -13,7 +13,7 @@ export default async function handler(req, res) {
 
   try {
     const response = await fetch(
-      `${SUPABASE_URL}/rest/v1/purolar_testimonials?select=id,quote,service,author_name,location&is_published=eq.true&order=display_order.asc,created_at.asc&limit=6`,
+      `${SUPABASE_URL}/rest/v1/purolar_testimonials?select=id,quote,service,author_name,location,avatar_url&is_published=eq.true&order=display_order.asc,created_at.asc&limit=6`,
       {
         headers: {
           apikey: SUPABASE_KEY,

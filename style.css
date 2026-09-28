@@ -28,6 +28,7 @@
 .review-featured figcaption strong,.review-featured figcaption small{color:var(--terra)}
 .review-featured figcaption .review-avatar{color:var(--terra);border-color:#c65a3f40}
 .review-avatar{width:44px;height:44px;display:grid;place-items:center;border:1px solid #dcc3a660;border-radius:50%;font-size:12px;color:var(--sand);flex-shrink:0}
+.review-avatar img{width:100%;height:100%;display:block;object-fit:cover;border-radius:50%}
 .reviews-secondary{display:grid;gap:24px}
 .review-service{font-size:12px;color:var(--terra)}
 .reviews-bottom{display:flex;justify-content:space-between;align-items:center;gap:24px;margin-top:32px}

@@ -37,11 +37,20 @@ if(reviews){
    const card=document.createElement('figure');
    card.className='review review-slot-'+slot+(slot===0?' review-featured':'');
    card.dataset.entry=id;
-   card.innerHTML='<span class="review-service"></span><blockquote><p></p></blockquote><figcaption><span class="review-avatar" aria-hidden="true">PL</span><span><strong></strong><small></small></span></figcaption>';
+   card.innerHTML='<span class="review-service"></span><blockquote><p></p></blockquote><figcaption><span class="review-avatar" aria-hidden="true"></span><span><strong></strong><small></small></span></figcaption>';
    card.querySelector('.review-service').textContent=entry.service||'PuroLar';
    card.querySelector('blockquote p').textContent=entry.quote;
    card.querySelector('figcaption strong').textContent=entry.author||'Cliente PuroLar';
    card.querySelector('figcaption small').textContent=entry.location||'Lisboa';
+   const nameParts=(entry.author||'Cliente PuroLar').trim().split(/\s+/).filter(Boolean);
+   const initials=nameParts.length>1?nameParts[0][0]+nameParts[nameParts.length-1][0]:nameParts[0]?.slice(0,2)||'PL';
+   const avatar=card.querySelector('.review-avatar');
+   if(entry.avatar){
+    const image=document.createElement('img');
+    image.src=entry.avatar; image.alt=''; image.loading='lazy';
+    image.addEventListener('error',()=>{image.remove();avatar.textContent=initials;});
+    avatar.append(image);
+   }else avatar.textContent=initials;
    return card;
   };
   let cards=[make(queue[0],0),make(queue[2],1),make(queue[1],2)];
@@ -87,7 +96,7 @@ if(reviews){
   try{
    const response=await fetch('/api/testimonials',{headers:{Accept:'application/json'},cache:'no-store'});
    const payload=await response.json();
-   const entries=(payload.items||[]).slice(0,6).map(item=>({quote:item.quote,service:item.service,author:item.author_name,location:item.location||'Lisboa'}));
+   const entries=(payload.items||[]).slice(0,6).map(item=>({quote:item.quote,service:item.service,author:item.author_name,location:item.location||'Lisboa',avatar:item.avatar_url||''}));
    start(entries);
   }catch(error){reviews.hidden=true;console.warn('Não foi possível carregar as avaliações.',error);}
  })();
