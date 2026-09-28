@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     }
 
     const items = await response.json();
-    res.setHeader('Cache-Control', 's-maxage=60, stale-while-revalidate=300');
+    res.setHeader('Cache-Control', 'no-store');
     return res.status(200).json({ items });
   } catch (error) {
     console.error('Testimonials request failed:', error);
