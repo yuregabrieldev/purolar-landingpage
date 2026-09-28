@@ -1,6 +1,13 @@
 const toggle=document.querySelector('.menu-toggle'),nav=document.querySelector('.navlinks');
 toggle?.addEventListener('click',()=>{const open=nav.classList.toggle('open');toggle.setAttribute('aria-expanded',String(open));});
 nav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classList.remove('open');toggle?.setAttribute('aria-expanded','false');}));
+// Keep the diagonal arrow in text presentation on iOS instead of allowing it
+// to be rendered as the platform's blue emoji glyph.
+document.querySelectorAll('a,button,[aria-hidden="true"]').forEach(el=>{
+ el.childNodes.forEach(node=>{
+  if(node.nodeType===Node.TEXT_NODE) node.nodeValue=node.nodeValue.replace(/\u2197(?!\ufe0e)/g,'\u2197\ufe0e');
+ });
+});
 document.querySelectorAll('[data-service]').forEach(a=>a.addEventListener('click',()=>{document.querySelector('[name=service]').value=a.dataset.service;}));
 const form=document.querySelector('#lead-form');
 form?.addEventListener('submit',async e=>{e.preventDefault();const button=form.querySelector('button'),status=document.querySelector('#form-status');button.disabled=true;button.textContent='A guardar…';status.textContent='';
