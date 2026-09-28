@@ -5,7 +5,8 @@
 .service-image{display:block;width:100%;height:auto;aspect-ratio:3/2;object-fit:contain;object-position:center;margin:0 0 26px;border-radius:6px;background:var(--sand)}
 .hero-media>img{object-position:50% 40%}
 
-.arrow-text{display:inline-block;font-family:inherit;font-size:.9em;font-weight:600;line-height:1;vertical-align:.02em;margin-left:.08em}
+.arrow-text{display:inline-block;font-family:inherit;font-size:1em;font-weight:inherit;line-height:1;vertical-align:.02em;margin-left:.08em}.arrow-mobile{display:none}
+@media(max-width:650px){.arrow-desktop{display:none}.arrow-mobile{display:inline}.arrow-text{font-size:.9em;font-weight:600}}
 
 /* Avaliações: exemplos identificados na página de teste. */
 .reviews{--review-ink:var(--terra);--review-muted:var(--muted);background:#eee7dc;color:var(--review-ink)}

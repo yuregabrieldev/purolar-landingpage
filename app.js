@@ -9,7 +9,7 @@ document.querySelectorAll('a,button,[aria-hidden="true"]').forEach(el=>{
   const parts=node.nodeValue.split(/[\u2197\u2192]/), fragment=document.createDocumentFragment();
   parts.forEach((part,index)=>{
    if(part) fragment.append(document.createTextNode(part));
-   if(index<parts.length-1){const arrow=document.createElement('span');arrow.className='arrow-text';arrow.textContent='\u2192';arrow.setAttribute('aria-hidden','true');fragment.append(arrow);}
+   if(index<parts.length-1){const arrow=document.createElement('span');arrow.className='arrow-text';arrow.innerHTML='<span class="arrow-desktop">↗︎</span><span class="arrow-mobile">→</span>';arrow.setAttribute('aria-hidden','true');fragment.append(arrow);}
   });
   node.replaceWith(fragment);
  });
