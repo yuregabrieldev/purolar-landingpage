@@ -1,0 +1,9 @@
+User-agent: *
+Allow: /
+Disallow: /api/
+Disallow: /recursos-purolar
+Disallow: /variacoes
+Disallow: /cartoes
+Disallow: /identidade
+
+Sitemap: https://www.purolarlimpezas.com/sitemap.xml
