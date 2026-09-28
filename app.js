@@ -5,7 +5,13 @@ nav?.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>{nav.classL
 // to be rendered as the platform's blue emoji glyph.
 document.querySelectorAll('a,button,[aria-hidden="true"]').forEach(el=>{
  el.childNodes.forEach(node=>{
-  if(node.nodeType===Node.TEXT_NODE) node.nodeValue=node.nodeValue.replace(/\u2197(?!\ufe0e)/g,'\u2197\ufe0e');
+  if(node.nodeType!==Node.TEXT_NODE || !node.nodeValue.includes('\u2197')) return;
+  const parts=node.nodeValue.split('\u2197'), fragment=document.createDocumentFragment();
+  parts.forEach((part,index)=>{
+   if(part) fragment.append(document.createTextNode(part));
+   if(index<parts.length-1){const arrow=document.createElement('span');arrow.className='arrow-text';arrow.textContent='\u2197\ufe0e';arrow.setAttribute('aria-hidden','true');fragment.append(arrow);}
+  });
+  node.replaceWith(fragment);
  });
 });
 document.querySelectorAll('[data-service]').forEach(a=>a.addEventListener('click',()=>{document.querySelector('[name=service]').value=a.dataset.service;}));
